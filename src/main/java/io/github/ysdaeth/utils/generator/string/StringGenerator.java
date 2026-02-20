@@ -7,6 +7,10 @@ public abstract class StringGenerator {
     private final Random random;
     private final char[] characters;
 
+    /**
+     * Create string generator
+     * @param random random generator
+     */
     protected StringGenerator(Random random){
         this.random = random;
         this.characters = createAllowedCharacters();
@@ -33,7 +37,7 @@ public abstract class StringGenerator {
     /**
      * Provide instance of random string generator that will generate strings based on
      * specified generator type. By default, it uses {@link Random} instance to generate a string.
-     * For other implementation of the random use {@link this#getInstance(GeneratorType, Random)};
+     * For other implementation of the random use overloaded method
      * @param type type of string generator
      * @return String generator
      */
@@ -49,7 +53,7 @@ public abstract class StringGenerator {
 
 
     /**
-     * Generate random String based on specified implementation by {@link this#getInstance(GeneratorType)} method
+     * Generate random String based on specified implementation by getInstance method
      * @param length length of the randomly generated string
      * @return random string
      */

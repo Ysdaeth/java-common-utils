@@ -8,10 +8,18 @@ import java.util.Random;
  */
 class LatinGenerator extends StringGenerator {
 
+    /**
+     * Create this instance
+     * @param random random generator used to generate random strings
+     */
     LatinGenerator(Random random) {
         super(random);
     }
 
+    /**
+     * Method generates Alphanumeric signs which are a-z, and A-Z
+     * @return array of characters that may be used for generating string
+     */
     @Override
      protected char[] createAllowedCharacters(){
         char[] lowercase = StringGenerator.generateSequentialASCII('a','z');
