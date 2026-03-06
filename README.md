@@ -14,9 +14,9 @@ Array matchers to find subarrays
 
 ### ordered matchers
 Matchers that find subarray in the array, where element values are in the same order, and 
-return index of the first element that matches.
+return index of the first element that matches. Support for primitive and reference types.
 
 ## Requirements
 - Java 11
 
-### [Changelog](https://github.com/Ysdaeth/java-common-utils/blob/main/CHANGELOG.md) - version changes
+### [Changelog](https://github.com/Ysdaeth/java-common-utils/blob/main/CHANGELOG.MD) - version changes

@@ -1,46 +1,46 @@
 package io.github.ysdaeth.utils.array;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class ArrayMatcherTest {
 
-    // SUB ARRAY AT THE BEGINNING TEST ==============================================================
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_ObjectArray() {
-        Object[] array = {"A", "B", "C", "D", "E", "F", "G"};
-        Object[] subarray = {"A", "B", "C"};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
-    }
-
+    // PRIMITIVE TYPES TEST
     @Test
     void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_longArray() {
 
-        long[] array = {2147483650L, 2147483651L, 2147483652L,
-                2147483653L, 2147483654L, 2147483655L, 2147483656L};
-
-        long[] subarray = {2147483650L, 2147483651L, 2147483652L};
+        Long base = Long.MAX_VALUE - 4;
+        long[] array = {base, base + 1, base + 2, base + 3, base + 4};
+        long[] subarray = {base, base + 1, base + 2, base + 3};
 
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for long");
     }
 
     @Test
     void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_intArray() {
-        int[] array = {1, 2, 3, 4, 5, 6, 7};
-        int[] subarray = {1, 2, 3};
+        int base = Integer.MAX_VALUE - 4;
+        int[] array = {base, base + 1, base +2, base +3, base +4};
+        int[] subarray = {base, base +1, base +2};
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for int");
     }
 
     @Test
     void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_shortArray() {
-        short[] array = {1, 2, 3, 4, 5, 6, 7};
-        short[] subarray = {1, 2, 3};
+        short base = Short.MAX_VALUE -6;
+        short[] array = {base, (short)(base+1), (short)(base + 2), (short)(base +3)};
+        short[] subarray = {base, (short)(base+1), (short)(base + 2)};
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for short");
     }
 
     @Test
@@ -48,7 +48,7 @@ class ArrayMatcherTest {
         byte[] array = {1, 2, 3, 4, 5, 6, 7};
         byte[] subarray = {1, 2, 3};
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for byte");
     }
 
     @Test
@@ -56,7 +56,7 @@ class ArrayMatcherTest {
         char[] array = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
         char[] subarray = {'a', 'b', 'c'};
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for char");
     }
 
     @Test
@@ -64,7 +64,7 @@ class ArrayMatcherTest {
         float[] array = {1.1F, 2.2F, 3.3F, 4.4F, 5.5F, 6.6F, 7.7F};
         float[] subarray = {1.1F, 2.2F, 3.3F};
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for float");
     }
 
     @Test
@@ -72,200 +72,98 @@ class ArrayMatcherTest {
         double[] array = {1.1D, 2.2D, 3.3D, 4.4D, 5.5D, 6.6D, 7.7D};
         double[] subarray = {1.1D, 2.2D, 3.3D,};
         int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Index mismatch when subarray is in the beginning");
+        assertEquals(0,result,"Index mismatch for double");
     }
 
-    // SUB ARRAY AT THE MIDDLE TEST =================================================================
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_ObjectArray() {
-        Object[] array = {"A", "B", "C", "D", "E", "F", "G"};
-        Object[] subarray = {"C", "D", "E"};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
+    // MAIN TESTS
+
+    @ParameterizedTest
+    @MethodSource("intSubarraysIndexes_stringArrays")
+    void indexOfSubarray_ShouldReturnIndex_ObjectArray(
+            Object[] array, Object[] subarray, int offset, int expected) {
+
+        int result = ArrayMatcher.indexOfSubarray(array, subarray,offset);
+
+        assertEquals(expected,result,
+                ()->{
+                    String arrayElements = Arrays.toString(array);
+                    String subarrayElements = Arrays.toString(subarray);
+                    return String.format(
+                            "Index mismatch. Array: '%s', subarray: '%s', offset: '%d'",
+                            arrayElements,subarrayElements, offset
+                    );
+                });
     }
 
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_longArray() {
-
-        long[] array = {2147483650L, 2147483651L, 2147483652L,
-                2147483653L, 2147483654L, 2147483655L, 2147483656L};
-
-        long[] subarray = {2147483652L, 2147483653L, 2147483654L};
-
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
+    static Stream<Arguments> intSubarraysIndexes_stringArrays(){
+        // array, subarray, offset, expected index
+        return Stream.of(
+                Arguments.of(new String[]{"1","2","1","2","3","4","5","6"}, new String[] {"1","2","3"}, 0, 2),
+                Arguments.of(new String[]{"0","1","2","3","4","5","6"}, new String[]{"1","2","3"}, 0, 1),
+                Arguments.of(new String[]{"0","0","0","0","0","0"}, new String[]{"1","2","3"}, 0, -1),
+                Arguments.of(new String[]{"0","1"}, new String[]{"1","2","3"}, 0, -1),
+                Arguments.of(new String[]{"0","1","2","1"}, new String[]{"1","2","3"}, 0, -1),
+                Arguments.of(new String[]{"0","1","2","3","4"}, new String[]{"0","1","2"}, 0, 0),
+                Arguments.of(new String[]{"0","1","2","3","4"}, new String[]{"1","2","3"}, 1, 1),
+                Arguments.of(new String[]{"0","2","3","4","5"}, new String[]{"1","2","3"}, 1, -1),
+                Arguments.of(new String[]{"0","1","2","3","4","1","2","3"}, new String[]{"1","2","3"}, 2, 5),
+                Arguments.of(new String[]{"0","1","2","3","1","2","3"}, new String[]{"1","2","3"}, 2, 4),
+                Arguments.of(new String[]{"1","2","3","1","2","3"}, new String[]{"1","2","3"}, 2, 3),
+                Arguments.of(new String[]{"1",null,null,"1","2","3"}, new String[]{"1",null,null}, 0, 0),
+                Arguments.of(new String[]{null,null,null,"1","2","3"}, new String[]{null,null,"1"}, 1, 1),
+                Arguments.of(new String[]{null,null,null,"1",null,null,"1","2","3"}, new String[]{null,null,"1"}, 2, 4),
+                Arguments.of(new String[]{null,null,null}, new String[]{null,null,}, 0, 0),
+                Arguments.of(new String[]{null,null,null}, new String[]{null,null,}, 1, 1),
+                Arguments.of(new String[]{"1","2","3"}, new String[]{"4","5","6"}, 0, -1),
+                Arguments.of(new String[]{"1","2","3"}, new String[]{"2","3","4"}, 0, -1),
+                Arguments.of(new String[]{}, new String[]{}, 0, -1),
+                Arguments.of(new String[]{}, new String[]{}, 1, -1),
+                Arguments.of(new String[]{}, new String[]{"a","b"}, 0, -1),
+                Arguments.of(new String[]{"a","b"}, new String[]{}, 0, -1)
+        );
     }
 
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_intArray() {
-        int[] array = {1, 2, 3, 4, 5, 6, 7};
-        int[] subarray = {3, 4, 5};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
+    @ParameterizedTest
+    @MethodSource("intSubarraysIndexes_intArrays")
+    void indexOfSubarray_ShouldReturnIndex(
+            int[] array, int[] subarray, int offset, int expected) {
+
+        int result = ArrayMatcher.indexOfSubarray(array, subarray, offset);
+
+        assertEquals(expected,result,
+                ()->{
+            String arrayElements = Arrays.toString(array);
+            String subarrayElements = Arrays.toString(subarray);
+            return String.format(
+                    "Index mismatch. Array: '%s', subarray: '%s', offset: '%d'",
+                    arrayElements,subarrayElements, offset
+            );
+        });
     }
 
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_shortArray() {
-        short[] array = {1, 2, 3, 4, 5, 6, 7};
-        short[] subarray = {3, 4, 5};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
+    static Stream<Arguments> intSubarraysIndexes_intArrays(){
+        // array, subarray, offset, expected index
+        return Stream.of(
+                Arguments.of(new int[]{1,2,1,2,3,4}, new int[]{1,2,3}, 0, 2),
+                Arguments.of(new int[]{0,1,2,3,4,5,6}, new int[]{1,2,3}, 0, 1),
+                Arguments.of(new int[]{0,0,0,0,0,0}, new int[]{1,2,3}, 0, -1),
+                Arguments.of(new int[]{0,1}, new int[]{1,2,3}, 0, -1),
+                Arguments.of(new int[]{0,1,2,1}, new int[]{1,2,3}, 0, -1),
+                Arguments.of(new int[]{0,1,2,3,4}, new int[]{0,1,2}, 0, 0),
+                Arguments.of(new int[]{0,1,2,3,4}, new int[]{1,2,3}, 1, 1),
+                Arguments.of(new int[]{0,2,3,4,5}, new int[]{1,2,3}, 1, -1),
+                Arguments.of(new int[]{0,1,2,3,4,1,2,3}, new int[]{1,2,3}, 2, 5),
+                Arguments.of(new int[]{0,1,2,3,1,2,3}, new int[]{1,2,3}, 2, 4),
+                Arguments.of(new int[]{1,2,3,1,2,3}, new int[]{1,2,3}, 2, 3),
+                Arguments.of(new int[]{1,2,3,1,2,3}, new int[]{1,2,3}, 4, -1),
+                Arguments.of(new int[]{1,2,3,1,2,3}, new int[]{1,2,3}, 5, -1),
+                Arguments.of(new int[]{1,2,3,1,2,3}, new int[]{1,2,3}, 6, -1),
+                Arguments.of(new int[]{1,2,3,1,2,3}, new int[]{2}, -99, 1),
+                Arguments.of(new int[]{1}, new int[]{1}, 0, 0),
+                Arguments.of(new int[]{}, new int[]{}, 0, -1),
+                Arguments.of(new int[]{}, new int[]{}, 1, -1),
+                Arguments.of(new int[]{}, new int[]{1,2,3}, 0, -1),
+                Arguments.of(new int[]{1,2,3}, new int[]{}, 0, -1)
+        );
     }
-
-    @Test
-    void indexOfSubarray_ShouldReturnTrueIndexOfArrayAtTheMiddle_byteArray() {
-        byte[] array = {1, 2, 3, 4, 5, 6, 7};
-        byte[] subarray = {3, 4, 5};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_charArray() {
-        char[] array = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-        char[] subarray = {'c', 'd', 'e'};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_floatArray() {
-        float[] array = {1.1F, 2.2F, 3.3F, 4.4F, 5.5F, 6.6F, 7.7F};
-        float[] subarray = {3.3F, 4.4F, 5.5F};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheMiddle_doubleArray() {
-        double[] array = {1.1D, 2.2D, 3.3D, 4.4D, 5.5D, 6.6D, 7.7D};
-        double[] subarray = {3.3D, 4.4D, 5.5D};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(2,result,"Index mismatch when subarray is in the middle");
-    }
-
-    // SUB ARRAY AT THE END TEST ====================================================================
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_ObjectArray() {
-        Object[] array = {1, 2, 3, 4, 5, 6, 7};
-        Object[] subarray = {5, 6, 7};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_longArray() {
-
-        long[] array = {2147483650L, 2147483651L, 2147483652L,
-                2147483653L, 2147483654L, 2147483655L, 2147483656L};
-
-        long[] subarray = {2147483654L, 2147483655L, 2147483656L};
-
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_intArray() {
-        int[] array = {1, 2, 3, 4, 5, 6, 7};
-        int[] subarray = {5, 6, 7};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_shortArray() {
-        short[] array = {1, 2, 3, 4, 5, 6, 7};
-        short[] subarray = {5, 6, 7};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnTrueIndexOfArrayAtTheEnd_byteArray() {
-        byte[] array = {1, 2, 3, 4, 5, 6, 7};
-        byte[] subarray = {5, 6, 7};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_charArray() {
-        char[] array = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-        char[] subarray = {'e', 'f', 'g'};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_floatArray() {
-        float[] array = {1.1F, 2.2F, 3.3F, 4.4F, 5.5F, 6.6F, 7.7F};
-        float[] subarray = { 5.5F, 6.6F, 7.7F};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Index mismatch when subarray is at the end");
-    }
-
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheEnd_doubleArray() {
-        double[] array = {1.1D, 2.2D, 3.3D, 4.4D, 5.5D, 6.6D, 7.7D};
-        double[] subarray = {5.5D, 6.6D, 7.7D};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(4,result,"Subarray index expected was 4");
-    }
-
-    // ARRAYS ARE THE SAME TEST =====================================================================
-    @Test
-    void indexOfSubarray_ShouldReturnTrueWhenArraysAreTheSame_ObjectArray() {
-        Object[] array = {1, 2, 3};
-        Object[] subarray = {1, 2, 3};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(0,result,"Subarray index expected was 0");
-    }
-
-    // ARRAYS WITH NULL NO EXCEPTION TEST ===========================================================
-    @Test
-    void indexOfSubarray_ShouldNotThrowExceptionWithNullElements_ObjectArray() {
-        Object[] array = {1, null, 3};
-        Object[] subarray = {null};
-        assertDoesNotThrow(() -> ArrayMatcher.indexOfSubarray(array, subarray),
-                "Exception was thrown when array contains null value");
-    }
-
-    // ARRAYS WITH NULL TEST ========================================================================
-    @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubarrayWithNullElements_ObjectArray() {
-        Object[] array = {1, 2, null, 4, 5, 6, 7};
-        Object[] subarray = {2, null, 4};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(1,result,"Subarray index expected was 1");
-    }
-
-    // SUB ARRAY IS BIGGER TEST =====================================================================
-    @Test
-    void indexOfSubarray_ShouldReturnNegativeIndexWhenSubArrayIsBigger_ObjectArray() {
-        Object[] array = {1, 2, 3};
-        Object[] subarray = {1, 2, 3, 4, 5};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(-1,result,"Subarray index expected was -1");
-    }
-
-    // CONTAINS ELEMENTS, BUT DIFFERENT ORDER TEST ==================================================
-    @Test
-    void containsOrdered_ShouldReturnNegativeIndexWhenArrayContainsSubArrayElementsButOrderDoesNotMatch_ObjectArray() {
-        Object[] array = {1, 2, 3, 4, 5, 6, 7};
-        Object[] subarray = {1, 3, 5};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(-1,result,"Subarray index expected was -1");
-    }
-
-
-    //  DOES NOT CONTAIN ALL ELEMENTS TEST
-    @Test
-    void indexOfSubarray_ShouldReturnFalseWhenSubArrayNotMatches_ObjectArray() {
-        Object[] array = {1, 2, 3, 4, 5, 6, 7};
-        Object[] subarray = {6, 7, 8};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
-        assertEquals(-1,result,"Subarray index expected was -1");
-    }
-
 }
