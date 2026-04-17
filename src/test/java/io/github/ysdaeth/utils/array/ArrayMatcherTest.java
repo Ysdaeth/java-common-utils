@@ -1,5 +1,6 @@
 package io.github.ysdaeth.utils.array;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,76 +14,76 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ArrayMatcherTest {
 
-    // PRIMITIVE TYPES TEST
+    // TODO REFACTOR PRIMITIVE TESTS
     @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_longArray() {
+    void findSubarray_shouldAccept_longArray() {
 
-        Long base = Long.MAX_VALUE - 4;
+        long base = Long.MAX_VALUE - 4;
         long[] array = {base, base + 1, base + 2, base + 3, base + 4};
         long[] subarray = {base, base + 1, base + 2, base + 3};
 
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for long");
     }
 
     @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_intArray() {
+    void findSubarray_shouldAccept_intArray() {
         int base = Integer.MAX_VALUE - 4;
         int[] array = {base, base + 1, base +2, base +3, base +4};
         int[] subarray = {base, base +1, base +2};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for int");
     }
 
     @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_shortArray() {
+    void findSubarray_shouldAccept_shortArray() {
         short base = Short.MAX_VALUE -6;
         short[] array = {base, (short)(base+1), (short)(base + 2), (short)(base +3)};
         short[] subarray = {base, (short)(base+1), (short)(base + 2)};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for short");
     }
 
     @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_byteArray() {
+    void findSubarray_shouldAccept_byteArray() {
         byte[] array = {1, 2, 3, 4, 5, 6, 7};
         byte[] subarray = {1, 2, 3};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for byte");
     }
 
     @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_charArray() {
+    void findSubarray_shouldAccept_charArray() {
         char[] array = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
         char[] subarray = {'a', 'b', 'c'};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for char");
     }
 
     @Test
-    void indexOfSubarray_ShouldReturnIndexOfSubArrayAtTheBeginning_floatArray() {
+    void findSubarray_shouldAccept_floatArray() {
         float[] array = {1.1F, 2.2F, 3.3F, 4.4F, 5.5F, 6.6F, 7.7F};
         float[] subarray = {1.1F, 2.2F, 3.3F};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for float");
     }
 
     @Test
-    void indexOfSubarray_ShouldReturnTrueIndexOfArrayAtTheBeginning_doubleArray() {
+    void findSubarray_shouldAccept_doubleArray() {
         double[] array = {1.1D, 2.2D, 3.3D, 4.4D, 5.5D, 6.6D, 7.7D};
         double[] subarray = {1.1D, 2.2D, 3.3D,};
-        int result = ArrayMatcher.indexOfSubarray(array, subarray);
+        int result = ArrayMatcher.findSubarray(array, subarray);
         assertEquals(0,result,"Index mismatch for double");
     }
 
     // MAIN TESTS
 
     @ParameterizedTest
-    @MethodSource("intSubarraysIndexes_stringArrays")
-    void indexOfSubarray_ShouldReturnIndex_ObjectArray(
+    @MethodSource("expectedIndexes_Objects")
+    void findSubarray_ShouldReturnIndex_ObjectArray(
             Object[] array, Object[] subarray, int offset, int expected) {
 
-        int result = ArrayMatcher.indexOfSubarray(array, subarray,offset);
+        int result = ArrayMatcher.findSubarray(array, subarray,offset);
 
         assertEquals(expected,result,
                 ()->{
@@ -95,7 +96,7 @@ class ArrayMatcherTest {
                 });
     }
 
-    static Stream<Arguments> intSubarraysIndexes_stringArrays(){
+    static Stream<Arguments> expectedIndexes_Objects(){
         // array, subarray, offset, expected index
         return Stream.of(
                 Arguments.of(new String[]{"1","2","1","2","3","4","5","6"}, new String[] {"1","2","3"}, 0, 2),
@@ -124,11 +125,11 @@ class ArrayMatcherTest {
     }
 
     @ParameterizedTest
-    @MethodSource("intSubarraysIndexes_intArrays")
-    void indexOfSubarray_ShouldReturnIndex(
+    @MethodSource("expectedIndexes_primitiveInt")
+    void findSubarray_ShouldReturnIndex(
             int[] array, int[] subarray, int offset, int expected) {
 
-        int result = ArrayMatcher.indexOfSubarray(array, subarray, offset);
+        int result = ArrayMatcher.findSubarray(array, subarray, offset);
 
         assertEquals(expected,result,
                 ()->{
@@ -141,7 +142,7 @@ class ArrayMatcherTest {
         });
     }
 
-    static Stream<Arguments> intSubarraysIndexes_intArrays(){
+    static Stream<Arguments> expectedIndexes_primitiveInt(){
         // array, subarray, offset, expected index
         return Stream.of(
                 Arguments.of(new int[]{1,2,1,2,3,4}, new int[]{1,2,3}, 0, 2),
@@ -165,5 +166,37 @@ class ArrayMatcherTest {
                 Arguments.of(new int[]{}, new int[]{1,2,3}, 0, -1),
                 Arguments.of(new int[]{1,2,3}, new int[]{}, 0, -1)
         );
+    }
+
+    @Test
+    void findAllNull_shouldReturnEmptyArray(){
+        String[] array = new String[]{"zero","one","two","three","four","five"};
+        int[] expected = new int[]{};
+        int[] actual = ArrayMatcher.findAllNull(array);
+        Assertions.assertArrayEquals(expected,actual,"find all null should return empty array");
+    }
+
+    @Test
+    void findAllNull_shouldReturnIndex_one(){
+        String[] array = new String[]{"zero",null,"two","three","four","five"};
+        int[] expected = new int[]{1};
+        int[] actual = ArrayMatcher.findAllNull(array);
+        Assertions.assertArrayEquals(expected,actual,"find all null should return one index");
+    }
+
+    @Test
+    void findAllNull_shouldReturnIndex_zeroAndFive(){
+        String[] array = new String[]{null,"one","two","three","four",null};
+        int[] expected = new int[]{0,5};
+        int[] actual = ArrayMatcher.findAllNull(array);
+        Assertions.assertArrayEquals(expected,actual,"find all null should return two indexes");
+    }
+
+    @Test
+    void findAllNull_shouldReturnIndex_every(){
+        String[] array = new String[]{null,null,null,null,null,null};
+        int[] expected = new int[]{0, 1, 2, 3, 4, 5};
+        int[] actual = ArrayMatcher.findAllNull(array);
+        Assertions.assertArrayEquals(expected,actual,"find all null should return every index");
     }
 }

@@ -1,7 +1,10 @@
 package io.github.ysdaeth.utils.array;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.IntBinaryOperator;
+import java.util.stream.Collectors;
 
 
 /**
@@ -36,17 +39,17 @@ public final class ArrayMatcher {
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(Object[] array, Object[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(Object[] array, Object[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> objectEquals(array[i],subarray[j])? 0 : -1,offset);
     }
 
     /**
-     * Same behavior as {@link ArrayMatcher#indexOfSubarray(Object[], Object[], int)}
+     * Same behavior as {@link ArrayMatcher#findSubarray(Object[], Object[], int)}
      * but offset is set to the beginning.
      */
-    public static int indexOfSubarray(Object[] array, Object[] subarray){
-        return indexOfSubarray(array, subarray, 0);
+    public static int findSubarray(Object[] array, Object[] subarray){
+        return findSubarray(array, subarray, 0);
     }
 
     private static boolean objectEquals(Object obj1, Object obj2){
@@ -69,8 +72,8 @@ public final class ArrayMatcher {
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(long[] array, long[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(long[] array, long[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> array[i] == subarray[j]? 0: -1,offset);
     }
     /**
@@ -86,153 +89,153 @@ public final class ArrayMatcher {
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(long[] array, long[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(long[] array, long[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[], int)}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[], int)}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @param offset index where to start searching (inclusive).
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(int[] array, int[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(int[] array, int[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)->array[i] == subarray[j]? 0 : -1,offset);
     }
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[])}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[])}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(int[] array, int[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(int[] array, int[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[], int)}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[], int)}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @param offset index where to start searching (inclusive).
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(short[] array, short[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(short[] array, short[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> array[i] == subarray[j]? 0: -1,offset);
     }
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[])}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[])}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(short[] array, short[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(short[] array, short[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[], int)}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[], int)}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @param offset index where to start searching (inclusive).
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(byte[] array, byte[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(byte[] array, byte[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> array[i] == subarray[j]? 0: -1,offset);
     }
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[])}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[])}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(byte[] array, byte[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(byte[] array, byte[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[], int)}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[], int)}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @param offset index where to start searching (inclusive).
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(char[] array, char[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(char[] array, char[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> array[i] == subarray[j]? 0: -1,offset);
     }
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[])}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[])}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(char[] array, char[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(char[] array, char[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[], int)}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[], int)}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @param offset index where to start searching (inclusive).
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(double[] array, double[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(double[] array, double[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> array[i] == subarray[j]? 0: -1,offset);
     }
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[])}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[])}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(double[] array, double[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(double[] array, double[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[], int)}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[], int)}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @param offset index where to start searching (inclusive).
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(float[] array, float[] subarray, int offset){
-        return indexOfSubarray(
+    public static int findSubarray(float[] array, float[] subarray, int offset){
+        return findSubarray(
                 array.length, subarray.length, (i,j)-> array[i] == subarray[j]? 0 : -1,offset);
     }
 
     /**
-     * The same behavior as {@link ArrayMatcher#indexOfSubarray(long[], long[])}
+     * The same behavior as {@link ArrayMatcher#findSubarray(long[], long[])}
      * @param array source array
      * @param subarray subarray to be found in the array
      * @return index of the first matching element in the array, when array contains subarray
      * elements in the same order, -1 when does not, or subarray is bigger than the array
      */
-    public static int indexOfSubarray(float[] array, float[] subarray){
-        return indexOfSubarray(array,subarray,0);
+    public static int findSubarray(float[] array, float[] subarray){
+        return findSubarray(array,subarray,0);
     }
 
-    private static int indexOfSubarray(int arrayLength,
-                                       int subArrayLength,
-                                       IntBinaryOperator comparator,
-                                       int offset) {
+    private static int findSubarray(int arrayLength,
+                                    int subArrayLength,
+                                    IntBinaryOperator comparator,
+                                    int offset) {
 
         if (arrayLength == 0 || subArrayLength == 0) return -1;
 
@@ -257,5 +260,21 @@ public final class ArrayMatcher {
             }
         }
         return -1;
+    }
+
+    public static int[] findAllNull(Object[] objects){
+        ArrayList<Integer> nullIndex = new ArrayList<>();
+        for(int i =0; i < objects.length; i++){
+            if(objects[i] == null) nullIndex.add(i);
+        }
+        return nullIndex.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public static int[] findNull(Object[] objects, int offset){
+        ArrayList<Integer> nullIndex = new ArrayList<>();
+        for(int i = offset; i < objects.length; i++){
+            if(objects[i] == null) nullIndex.add(i);
+        }
+        return nullIndex.stream().mapToInt(Integer::intValue).toArray();
     }
 }
